@@ -1,0 +1,44 @@
+<%@ page import="com.grievance.util.Html" %>
+<%
+    String sbCtx = request.getContextPath();
+    String sbRole = (String) session.getAttribute("role");
+    String sbName = (String) session.getAttribute("userName");
+    String sbInitial = (sbName != null && !sbName.isEmpty()) ? sbName.substring(0, 1).toUpperCase() : "U";
+    String sbHome = "ADMIN".equals(sbRole) ? "/admin" : "FACULTY".equals(sbRole) ? "/faculty" : "/student";
+    String sbActive = (String) pageContext.findAttribute("navActive");
+%>
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="m2 13 10 5 10-5"/></svg>
+        </div>
+        <span class="brand-name">GrievEase</span>
+    </div>
+
+    <div class="profile">
+        <div class="avatar"><%= Html.esc(sbInitial) %></div>
+        <div><b><%= Html.esc(sbName) %></b><span><%= Html.esc(sbRole == null ? "" : sbRole.toLowerCase()) %></span></div>
+    </div>
+
+    <nav class="nav-links">
+        <a class="<%= "dashboard".equals(sbActive) ? "active" : "" %>" href="<%= sbCtx + sbHome %>">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+            Dashboard
+        </a>
+        <% if ("STUDENT".equals(sbRole)) { %>
+        <a class="<%= "submit".equals(sbActive) ? "active" : "" %>" href="<%= sbCtx %>/student/submit-grievance.jsp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            New Grievance
+        </a>
+        <% } %>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="nav-bottom">
+        <a href="<%= sbCtx %>/logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+            Logout
+        </a>
+    </div>
+</aside>
